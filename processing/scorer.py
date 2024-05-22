@@ -72,12 +72,15 @@ class TenengradScorer(Process):
     def _process(self, video: Video):
         iprs = []
         for mask in self.masks: 
-            gx = cv.Sobel(mask, cv.CV_64F, 1, 0, ksize=3)
-            gy = cv.Sobel(mask, cv.CV_64F, 0, 1, ksize=3)
+            gx = cv.Sobel(mask, cv.CV_64F, 1, 0, ksize=7)
+
+            gy = cv.Sobel(mask, cv.CV_64F, 0, 1, ksize=7)
+
             grad_mag = np.sqrt(gx**2 + gy**2)
+            #grad_mag = gx + gy
             
-            iprs.append(np.var(grad_mag))
-        return iprs
+            iprs.append(np.sum(grad_mag))
+        return iprs / max(iprs)
 
 
 class EnergyOfLaplacianScorer(Process):
@@ -94,7 +97,7 @@ class EnergyOfLaplacianScorer(Process):
         for mask in self.masks:
             laplacian = cv.Laplacian(mask, cv.CV_64F)
             iprs.append(np.sum(laplacian**2))
-        return iprs
+        return iprs / max(iprs)
 
 class ContrastScorer(Process):
     """
@@ -110,7 +113,25 @@ class ContrastScorer(Process):
         for mask in self.masks:
             contrast = np.std(mask)
             iprs.append(contrast)
-        return iprs
+        return iprs / max(iprs)
+
+
+class BrightnessScorer(Process):
+    """
+    score image according to brightness (brightness) score
+    the input masks should be the grayscale images
+    """
+    
+    def __init__(self, masks: str, **kwargs):
+        super().__init__(masks = masks, **kwargs)
+
+    def _process(self, video: Video):
+        iprs = []
+        for mask in self.masks:
+            brightness = np.mean(mask)
+            iprs.append(brightness)
+        return iprs / max(iprs)
+
 
 
 

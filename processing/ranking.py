@@ -93,10 +93,9 @@ class InformativeScorer(Process):
         contrast_binning = self.n_contrast_bins - self._bin_scores(self.contrast_score, self.n_contrast_bins)
         
         # do the actual ranking, first sort according to sharpness
-        rank = np.lexsort(np.stack([tenengrad_binning,
+        rank = np.lexsort(np.stack([tenengrad_binning + laplacian_binning,
                                     laplacian_binning,
                                     contrast_binning]))
-
         return np.argsort(rank)
 
 

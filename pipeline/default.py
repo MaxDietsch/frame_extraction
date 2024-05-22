@@ -20,39 +20,36 @@ pipeline = Pipeline([
     ReShaper(frames = 'frame_loader', target_shape = (640, 640), name = 'frame_reshaper'),
 
     # delete unneccessary frames
-    DeleteFrames(delete = 'frame_loader', name = 'deleter'),
+    #DeleteFrames(delete = 'frame_loader', name = 'deleter'),
+
     
-    GaussianBlurring(frames = 'frame_reshaper', kernel_shape = (3, 3), name = 'blurred'),
-    GrayScaler(frames = 'blurred', name = 'gray_frames'),
-    TenengradScorer(masks = 'gray_frames', name = 'tenengrad_score'),
-    EnergyOfLaplacianScorer(masks = 'gray_frames', name = 'laplacian_score'),
-    ContrastScorer(masks = 'gray_frames', name = 'contrast_score'),
-
-    InformativeScorer(tenengrad_score='tenengrad_score', laplacian_score='laplacian_score',
-                      contrast_score='contrast_score', n_tenengrad_bins=10, n_laplacian_bins=10,
-                      n_contrast_bins=10, name = 'ranker'),
-
-    PercentileDecimator(ranking = 'ranker', percentile = 20, name = 'decimator'),
-    Selector(frames = 'frame_reshaper', selection = 'decimator', name = 'selected_frames'),
-    VideoStorer(frames = 'selected_frames', root_directory = store_path, name = 'frame_storer'),
-    
-
-    #GrayScaler(frames = 'reshape', name = 'gray_frames'),
+    #GaussianBlurring(frames = 'frame_loader', kernel_shape = (5, 5), name = 'blurred'),
+    #GrayScaler(frames = 'blurred', name = 'gray_frames'),
     #TenengradScorer(masks = 'gray_frames', name = 'tenengrad_score'),
     #EnergyOfLaplacianScorer(masks = 'gray_frames', name = 'laplacian_score'),
     #ContrastScorer(masks = 'gray_frames', name = 'contrast_score'),
+    #InformativeScorer(tenengrad_score='tenengrad_score', laplacian_score='laplacian_score',
+    #                  contrast_score='contrast_score', n_tenengrad_bins=30, n_laplacian_bins=30,
+    #                  n_contrast_bins=30, name = 'ranker'),
 
-    #Filter(tenengrad_score='tenengrad_score', laplacian_score='laplacian_score',
-    #       contrast_score='contrast_score', tenengrad_thresh=7500, laplacian_thresh=0,
-    #       contrast_thresh=60, name = 'filter'),
-    #Selector(frames = 'frame_reshaper', selection='filter', name = 'selected_frames'),
-    #VideoStorer(frames = 'selected_frames', root_directory=store_path, name = 'frame_storer'),
+    #PercentileDecimator(ranking = 'ranker', percentile = 1000, name = 'decimator'),
+    #Selector(frames = 'frame_reshaper', selection = 'decimator', name = 'selected_frames'),
+    #VideoStorer(frames = 'selected_frames', root_directory = store_path, name = 'frame_storer'),
+    
+
+    GrayScaler(frames = 'frame_loader', name = 'gray_frames'),
+    GaussianBlurring(frames = 'frame_loader', kernel_shape = (5, 5), name = 'blurred'),
+    TenengradScorer(masks = 'gray_frames', name = 'tenengrad_score'),
+    Ranker(score = 'tenengrad_score', name = 'ranker'),
+    PercentileDecimator(ranking = 'ranker', percentile = 1000, name = 'decimator'),
+    Selector(frames = 'frame_reshaper', selection='decimator', name = 'selected_frames'),
+    VideoStorer(frames = 'selected_frames', root_directory=store_path, name = 'frame_storer'),
 
 
     # quite good results (eventually without smoothing to have otehr ones)
 
-    #GaussianBlurring(frames = 'frame_reshaper', kernel_shape = (11, 11), name = 'blurred'),
-    #CannyEdgeDetector(frames = 'blurred', thresh1 = 300, thresh2 = 400, name = 'edge_masks'),
+    #GaussianBlurring(frames = 'frame_loader', kernel_shape = (3, 3), name = 'blurred'),
+    #CannyEdgeDetector(frames = 'blurred', thresh1 = 200, thresh2 = 250, name = 'edge_masks'),
     #CountEdgeScorer(masks = 'edge_masks', name = 'edge_scorer'),
     #Ranker(score = 'edge_scorer', name = 'ranker'),
     #PercentileDecimator(ranking = 'ranker', percentile = 1000, name = 'decimator'),
