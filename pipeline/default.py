@@ -17,7 +17,6 @@ store_path = '/Users/maxdietsch/Desktop/master-thesis/frame_extraction/processed
 pipeline = Pipeline([
     # load frames and reshape them
     VideoLoader(root_directory = data_root, name = 'frame_loader'),
-    ReShaper(frames = 'frame_loader', target_shape = (640, 640), name = 'frame_reshaper'),
 
     # delete unneccessary frames
     #DeleteFrames(delete = 'frame_loader', name = 'deleter'),
@@ -36,32 +35,76 @@ pipeline = Pipeline([
     #Selector(frames = 'frame_reshaper', selection = 'decimator', name = 'selected_frames'),
     #VideoStorer(frames = 'selected_frames', root_directory = store_path, name = 'frame_storer'),
     
-
-    GrayScaler(frames = 'frame_loader', name = 'gray_frames'),
-    GaussianBlurring(frames = 'frame_loader', kernel_shape = (5, 5), name = 'blurred'),
-    TenengradScorer(masks = 'gray_frames', name = 'tenengrad_score'),
-    Ranker(score = 'tenengrad_score', name = 'ranker'),
-    PercentileDecimator(ranking = 'ranker', percentile = 1000, name = 'decimator'),
-    Selector(frames = 'frame_reshaper', selection='decimator', name = 'selected_frames'),
-    VideoStorer(frames = 'selected_frames', root_directory=store_path, name = 'frame_storer'),
+    # not bad
+    #GrayScaler(frames = 'frame_loader', name = 'gray_frames'),
+    #GaussianBlurring(frames = 'gray_frames', kernel_shape = (15, 15), name = 'blurred'),
+    #TenengradScorer(masks = 'blurred', name = 'tenengrad_score'),
+    #Ranker(score = 'tenengrad_score', name = 'ranker'),
+    #PercentileDecimator(ranking = 'ranker', percentile = 1000, name = 'decimator'),
+    #Selector(frames = 'frame_reshaper', selection='decimator', name = 'selected_frames'),
+    #VideoStorer(frames = 'selected_frames', root_directory=store_path, name = 'frame_storer'),
 
 
     # quite good results (eventually without smoothing to have otehr ones)
 
     #GaussianBlurring(frames = 'frame_loader', kernel_shape = (3, 3), name = 'blurred'),
-    #CannyEdgeDetector(frames = 'blurred', thresh1 = 200, thresh2 = 250, name = 'edge_masks'),
+    #CannyEdgeDetector(frames = 'blurred', thresh1 = 200, thresh2 = 300, name = 'edge_masks'),
     #CountEdgeScorer(masks = 'edge_masks', name = 'edge_scorer'),
     #Ranker(score = 'edge_scorer', name = 'ranker'),
     #PercentileDecimator(ranking = 'ranker', percentile = 1000, name = 'decimator'),
     #Selector(frames = 'frame_reshaper', selection = 'decimator', name = 'selected_frames'),
-    #VideoStorer(frames = 'selected_frames', root_directory = store_path, name = 'frame_storer')
+    #VideoStorer(frames = 'selected_frames', root_directory = store_path, name = 'frame_storer'),
+    
+
+    # good overall pipeline:
+    #ReShaper(frames = 'frame_loader', target_shape = (640, 640), name = 'frame_reshaper1'),
+    #GaussianBlurring(frames = 'frame_loader', kernel_shape = (3, 3), name = 'blurred'),
+    #FeatureScorer(masks = 'blurred', name = 'feature_score'),
+    #Ranker(score = 'feature_score', name = 'ranker'),
+    #PercentileDecimator(ranking = 'ranker', percentile = 50, name = 'decimator'),
+    #Selector(frames = 'frame_reshaper1', selection='decimator', name = 'selected_frames'),
+    #DeleteFrames(delete = 'frame_loader', name = 'deleter3'),
+    #DeleteFrames(delete = 'blurred', name = 'deleter4'),
+
+    #ReShaper(frames = 'selected_frames', target_shape = (640, 640), name = 'frame_reshaper2'),
 
     
+
+
+    #ToRGB(frames = 'frame_reshaper2', name = 'rgb_converter'),
+    #HighlightDetector(frames = 'rgb_converter', T1 = 240, T2_abs = 180, T2_rel = 1, T3 = 170, Nmin = 20, kernel_size = 15, inpaint = False, name = 'highlight_masks'),
+    #HighlightAreaScorer(masks = 'highlight_masks', name = 'highlight_score'),
+    #DeleteFrames(delete = 'rgb_converter', name = 'deleter1'),
+    #DeleteFrames(delete = 'highlight_masks', name = 'deleter2'),
+
+
+    #Ranker(score = 'highlight_score', name = 'highlight_ranker'),
+    #PercentileDecimator(ranking = 'highlight_ranker', percentile = 50, name = 'highlight_decimator'),
+    #Selector(frames = 'frame_reshaper2', selection='highlight_decimator', name = 'selected_highlight_frames'),
+    #VideoStorer(frames = 'selected_highlight_frames', root_directory=store_path, name = 'frame_storer'),
+
+
+
+
+
+
+    # also works good, blurring is essential here
+
+    GaussianBlurring(frames = 'frame_loader', kernel_shape = (3, 3), name = 'blurred'),
+    ReShaper(frames = 'frame_loader', target_shape = (640, 640), name = 'frame_reshaper'),
+    FeatureScorer(masks = 'blurred', name = 'feature_score'),
+    Ranker(score = 'feature_score', name = 'ranker'),
+    PercentileDecimator(ranking = 'ranker', percentile = 100, name = 'decimator'),
+    Selector(frames = 'frame_reshaper', selection='decimator', name = 'selected_frames'),
+    VideoStorer(frames = 'selected_frames', root_directory=store_path, name = 'frame_storer'),
+
+
 
     # detect specular highlights 
     #ToRGB(frames = 'frame_reshaper', name = 'rgb_converter'),
     #HighlightDetector(frames = 'rgb_converter', T1 = 240, T2_abs = 180, T2_rel = 1, T3 = 170, Nmin = 20, kernel_size = 15, inpaint = False, name = 'highlight_masks'),
     #HighlightAreaScorer(masks = 'highlight_masks', name = 'highlight_scorer'),
+
 
     # evaluate frame sharpness
     #CannyEdgeDetector(frames = 'frame_reshaper', thresh1 = 100, thresh2 = 200, name = 'edge_masks'),

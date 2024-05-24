@@ -6,7 +6,7 @@ from .reshape import ReShaper
 from .color_conversion import ToBGR, ToRGB, GrayScaler
 from .edge_detection import CannyEdgeDetector, Dilation
 from .highlight_detection import HighlightDetector
-from .scorer import HighlightAreaScorer, IsolatedPixelRatioScorer, CountEdgeScorer, TenengradScorer, EnergyOfLaplacianScorer, ContrastScorer, BrightnessScorer
+from .scorer import HighlightAreaScorer, IsolatedPixelRatioScorer, CountEdgeScorer, TenengradScorer, EnergyOfLaplacianScorer, ContrastScorer, BrightnessScorer, FeatureScorer
 from .motion import FrameDistanceEstimator, Sectionizer
 from .ranking import FrameScorer, Ranker, InformativeScorer, Filter
 from .decimator import Decimator, PercentileDecimator
@@ -44,5 +44,6 @@ __all__ = [
         'Filter',
         'GaussianBlurring',
         'MedianBlurring',
-        'BrightnessScorer'
+        'BrightnessScorer',
+        'FeatureScorer'
         ]

@@ -133,5 +133,24 @@ class BrightnessScorer(Process):
         return iprs / max(iprs)
 
 
+class FeatureScorer(Process):
+
+    """
+    score images according to how many features are detected from a 
+    feature detector
+    """
+
+    def __init__(self, masks: str, **kwargs):
+        super().__init__(masks=masks, **kwargs)
+        self.orb = cv.ORB_create()
+
+    def _process(self, video: Video):
+        iprs = []
+        for mask in self.masks:
+            features, _ = self.orb.detectAndCompute(mask, None)
+            iprs.append(len(features))
+        return iprs
+
+
 
 
