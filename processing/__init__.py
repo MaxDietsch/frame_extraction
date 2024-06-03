@@ -1,18 +1,18 @@
 from .pipeline import Pipeline
 from .process import Process
 from .video import Video
-from .loader import VideoLoader, VideoStorer
+from .loader import VideoLoader, VideoStorer, VideoStorerGPU, VideoLoaderGPU
 from .reshape import ReShaper
-from .color_conversion import ToBGR, ToRGB, GrayScaler
+from .color_conversion import ToBGR, ToRGB, GrayScaler, ToBGRGPU
 from .edge_detection import CannyEdgeDetector, Dilation
-from .highlight_detection import HighlightDetector
-from .scorer import HighlightAreaScorer, IsolatedPixelRatioScorer, CountEdgeScorer, TenengradScorer, EnergyOfLaplacianScorer, ContrastScorer, BrightnessScorer, FeatureScorer
+from .highlight_detection import HighlightDetector, HighlightDetectorGPU
+from .scorer import HighlightAreaScorer, IsolatedPixelRatioScorer, CountEdgeScorer, TenengradScorer, EnergyOfLaplacianScorer, ContrastScorer, BrightnessScorer, FeatureScorer, FeatureScorerGPU
 from .motion import FrameDistanceEstimator, Sectionizer
 from .ranking import FrameScorer, Ranker, InformativeScorer, Filter
 from .decimator import Decimator, PercentileDecimator
 from .selector import Selector
 from .delete import DeleteFrames
-from .smoothing import GaussianBlurring, MedianBlurring
+from .smoothing import GaussianBlurring, MedianBlurring, GaussianBlurringGPU
 __all__ = [
         'Pipeline', 
         'Process',
@@ -45,5 +45,11 @@ __all__ = [
         'GaussianBlurring',
         'MedianBlurring',
         'BrightnessScorer',
-        'FeatureScorer'
+        'FeatureScorer', 
+        'VideoLoaderGPU',
+        'VideoStorerGPU', 
+        'ToBGRGPU', 
+        'HighlightDetectorGPU', 
+        'FeatureScorerGPU', 
+        'GaussianBlurringGPU', 
         ]
