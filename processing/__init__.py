@@ -2,7 +2,7 @@ from .pipeline import Pipeline
 from .process import Process
 from .video import Video
 from .loader import VideoLoader, VideoStorer, VideoStorerGPU, VideoLoaderGPU
-from .reshape import ReShaper
+from .reshape import ReShaper, ReShaperGPU
 from .color_conversion import ToBGR, ToRGB, GrayScaler, ToBGRGPU
 from .edge_detection import CannyEdgeDetector, Dilation
 from .highlight_detection import HighlightDetector, HighlightDetectorGPU
@@ -52,4 +52,5 @@ __all__ = [
         'HighlightDetectorGPU', 
         'FeatureScorerGPU', 
         'GaussianBlurringGPU', 
+        'ReShaperGPU',
         ]
