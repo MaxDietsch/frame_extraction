@@ -1,6 +1,6 @@
 from .process import Process
 from typing import List
-
+import time
 
 class Pipeline:
     """
@@ -16,9 +16,14 @@ class Pipeline:
         """
         apply each process step to a video sequentially
         """
-        while not self.processes[0].is_empty(): # do it for every directory found 
+        while not self.processes[0].is_empty(): # do it for every directory found
+            start = time.time() 
+
             print(f'Starting processing cylce: ')
             video = None
             for process in self.processes:
                 print(f'    Launching {process.name}')
                 video = process(video)
+
+            end = time.time()
+            print(f'The processing cycle took {end - start} seconds.')
