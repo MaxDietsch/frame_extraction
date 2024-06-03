@@ -22,6 +22,22 @@ class ToRGB(Process):
             rgb_frames.append(cv.cvtColor(frame, cv.COLOR_BGR2RGB))
         return rgb_frames
 
+class ToRGBGPU(ToRGB):
+    """
+    convert RGB to BGR
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def _process(self, video: Video):
+        bgr_frames = []
+        for frame in self.frames:
+            frame_rgb = frame[..., [2, 1, 0]]
+            rgb_frames.append(frame_rgb)
+        return bgr_frames
+
+
 
 class ToBGR(Process):
     """

@@ -3,7 +3,7 @@ from .process import Process
 from .video import Video
 from .loader import VideoLoader, VideoStorer, VideoStorerGPU, VideoLoaderGPU
 from .reshape import ReShaper, ReShaperGPU
-from .color_conversion import ToBGR, ToRGB, GrayScaler, ToBGRGPU
+from .color_conversion import ToBGR, ToRGB, GrayScaler, ToBGRGPU, ToRGBGPU
 from .edge_detection import CannyEdgeDetector, Dilation
 from .highlight_detection import HighlightDetector, HighlightDetectorGPU
 from .scorer import HighlightAreaScorer, IsolatedPixelRatioScorer, CountEdgeScorer, TenengradScorer, EnergyOfLaplacianScorer, ContrastScorer, BrightnessScorer, FeatureScorer, FeatureScorerGPU
@@ -53,4 +53,5 @@ __all__ = [
         'FeatureScorerGPU', 
         'GaussianBlurringGPU', 
         'ReShaperGPU',
+        'ToRGBGPU',
         ]
