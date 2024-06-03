@@ -28,7 +28,7 @@ class ReShaper(Process):
 class ReShaperGPU(ReShaper):
 
     def __init__(self, **kwargs):
-        super().__init__(frames = frames, **kwargs)
+        super().__init__(**kwargs)
 
     def _process(self, video: Video):
         reshaped = []
