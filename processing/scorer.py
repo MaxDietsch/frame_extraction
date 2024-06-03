@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 from .process import Process
 from .video import Video
+import torch
 
 class HighlightAreaScorer(Process):
     """
@@ -150,6 +151,28 @@ class FeatureScorer(Process):
             features, _ = self.orb.detectAndCompute(mask, None)
             iprs.append(len(features))
         return iprs
+
+
+class FeatureScorerGPU(FeatureScorer):
+
+    def __init__(self, **kwargs):
+        super()__init__(**kwargs)
+
+    def _process(self, video: Video):
+        iprs = []
+        
+        for mask in self.masks:
+            mask_cpu = mask.to('cpu').numpy()
+            
+            # Convert the tensor to a NumPy array (make sure it's uint8)
+            mask_np = mask_cpu.astype(np.uint8)
+            
+            # Detect ORB features
+            features, _ = self.orb.detectAndCompute(mask_np, None)
+            iprs.append(len(features))
+
+        return iprs
+        
 
 
 

@@ -2,7 +2,7 @@ import os
 import cv2 as cv
 import numpy as np
 import json
-
+import torch
 from .process import Process
 from .video import Video
 
@@ -67,6 +67,29 @@ class VideoLoader(Process):
         return video
 
 
+class VideoLoaderGPU(VideoLoader):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def _process(self, video: Video):
+        """
+        take the current directory (referenced through self.video_index) and read in 
+        all its frames, create video object and return this video object.
+        ATTENTION: The resulting frames are in BGR-format !!!!!
+        """
+
+        frames = []
+        for path in self.paths[self.video_index]:
+            frames.append(torch.from_numpy((cv.imread(path))).to(device='cuda', dtype=torch.float32))
+        video = Video(video_id=self.video_names[self.video_index],
+                      frames=frames,
+                      producer_name=self.name)
+        self.video_index += 1
+        return video
+
+
+
 class VideoStorer(Process):
     """
     store the frames of a processed video 
@@ -94,3 +117,18 @@ class VideoStorer(Process):
             cv.imwrite(os.path.join(self.root_directory, str(video_id), str(i) + ".png"), img)
 
 
+class VideoStorerGPU(VideoStorer):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
+    def _process(self, video: Video):
+
+        video_id = video.video_id
+        os.makedirs(os.path.join(self.root_directory, str(video_id)), exist_ok=True)
+        for i, frame in enumerate(self.frames):
+            # Ensure the frame is on the CPU and convert to a NumPy array
+            img = frame.cpu().numpy().transpose(1, 2, 0)  # Convert from (C, H, W) to (H, W, C)
+            img = img.astype('uint8')  # Ensure the image is in uint8 format
+            cv.imwrite(os.path.join(self.root_directory, str(video_id), str(i) + ".png"), img)

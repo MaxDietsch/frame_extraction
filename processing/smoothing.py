@@ -1,9 +1,9 @@
 
 import cv2 as cv
-
+import torchvision.transforms.functional as TF
 from .process import Process
 from .video import Video
-
+import torch
 from typing import Tuple
 
 class GaussianBlurring(Process):
@@ -18,6 +18,20 @@ class GaussianBlurring(Process):
             blurred.append(cv.GaussianBlur(frame, self.kernel_shape, 0))
         return blurred
 
+
+class GaussianBlurringGPU(GaussianBlurring):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def _process(self, video: Video):
+        blurred = []
+        for frame in self.frames:
+            blurred_tensor = TF.gaussian_blur(frame, self.kernel_shape)
+        
+            blurred.append(blurred_tensor)  
+
+        return blurred
 
 class MedianBlurring(Process):
 

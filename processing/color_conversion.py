@@ -1,5 +1,5 @@
 import cv2 as cv
-
+import torch
 from .process import Process
 from .video import Video
 
@@ -35,6 +35,22 @@ class ToBGR(Process):
         bgr_frames = []
         for frame in self.frames:
             bgr_frames.append(cv.cvtColor(frame, cv.COLOR_RGB2BGR))
+        return bgr_frames
+
+
+class ToBGRGPU(ToBGR):
+    """
+    convert RGB to BGR
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def _process(self, video: Video):
+        bgr_frames = []
+        for frame in self.frames:
+            frame_rgb = frame[..., [2, 1, 0]]
+            rgb_frames.append(frame_rgb)
         return bgr_frames
 
 
