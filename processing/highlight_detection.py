@@ -242,7 +242,7 @@ class HighlightDetector(Process):
 
 class HighlightDetectorGPU(HighlightDetector):
 
-    def __init__(**kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
 
