@@ -156,7 +156,7 @@ class FeatureScorer(Process):
 class FeatureScorerGPU(FeatureScorer):
 
     def __init__(self, **kwargs):
-        super()__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _process(self, video: Video):
         iprs = []
