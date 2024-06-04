@@ -79,7 +79,7 @@ pipeline = Pipeline([
     DeleteFrames(delete = 'highlight_masks', name = 'deleter5'),
 
     Ranker(score = 'highlight_score', name = 'highlight_ranker'),
-    PercentileDecimator(ranking = 'highlight_ranker', percentile = 50, name = 'highlight_decimator'),
+    PercentileDecimator(ranking = 'highlight_ranker', percentile = 70, name = 'highlight_decimator'),
     Selector(frames = 'selected_frames', selection='highlight_decimator', name = 'selected_highlight_frames'),
     VideoStorer(frames = 'selected_highlight_frames', root_directory=store_path, name = 'frame_storer'),
 
