@@ -2,7 +2,7 @@ from .pipeline import Pipeline
 from .process import Process
 from .video import Video
 from .loader import VideoLoader, VideoStorer
-from .reshape import ReShaper, ReShaperGPU
+from .reshape import ReShaper
 from .color_conversion import ToBGR, ToRGB, GrayScaler
 from .edge_detection import CannyEdgeDetector, Dilation
 from .highlight_detection import HighlightDetector
