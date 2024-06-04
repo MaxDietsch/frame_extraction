@@ -13,8 +13,8 @@ from processing import *
 #data_root = '/Users/maxdietsch/Desktop/HyperKvasirVideo/extracted-frames/pathological-findings/polyps'
 #store_path = '/Users/maxdietsch/Desktop/HyperKvasirVideo/processed-frames/pathological-findings/polyps'
 
-data_root = '/home/stud/dietsch/master-thesis/extracted_frames/esophagitis'
-store_path = '/home/stud/dietsch/master-thesis/extracted_frames/esophagitis_processed'
+data_root = '/home/stud/dietsch/master-thesis/extracted_frames/cancer'
+store_path = '/home/stud/dietsch/master-thesis/extracted_frames/cancer_processed'
 
 
 
