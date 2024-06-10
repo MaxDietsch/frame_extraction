@@ -52,7 +52,7 @@ pipeline = Pipeline([
     # do the sectioning based on motion detection
     GrayScaler(frames = 'frame_reshaper1', name = 'gray_frames'),
     FrameDistanceEstimator(frames = 'gray_frames', masks = None, n_best_matches = 10, name = 'frame_distances'),
-    Sectionizer(motion = 'frame_distances', threshold = 10, name = 'frame_sections'),
+    Sectionizer(motion = 'frame_distances', threshold = 20, name = 'frame_sections'),
 
     # decimate images    
     Decimator(ranking = 'frame_scorer', sections = 'frame_sections', n_frames_per_section = 10, name = 'decimator'),
