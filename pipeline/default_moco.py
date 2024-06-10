@@ -47,7 +47,7 @@ pipeline = Pipeline([
     #Selector(frames = 'selected_frames', selection='highlight_decimator', name = 'selected_highlight_frames'),
     
     # rank the frames 
-    FrameScorer(sharpness_score = 'edge_scorer', highlight_score = 'highlight_scorer', n_sharpness_bins = 20, n_highlight_bins = 20, name = 'frame_scorer'),
+    FrameScorer(sharpness_score = 'feature_score', highlight_score = 'highlight_score', n_sharpness_bins = 20, n_highlight_bins = 20, name = 'frame_scorer'),
 
     # do the sectioning based on motion detection
     GrayScaler(frames = 'frame_reshaper1', name = 'gray_frames'),
