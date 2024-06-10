@@ -17,7 +17,7 @@ class Pipeline:
         apply each process step to a video sequentially
         """
         while not self.processes[0].is_empty(): # do it for every directory found
-            start = time.time() 
+            start = time.time()
 
             print(f'Starting processing cylce: ')
             video = None
