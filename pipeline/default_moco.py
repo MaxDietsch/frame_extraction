@@ -36,7 +36,7 @@ pipeline = Pipeline([
 
     
     # calc highlight score
-    ToRGB(frames = 'selected_frames', name = 'rgb_converter'),
+    ToRGB(frames = 'frame_reshaper1', name = 'rgb_converter'),
     HighlightDetector(frames = 'rgb_converter', T1 = 240, T2_abs = 180, T2_rel = 1, T3 = 170, Nmin = 20, kernel_size = 15, inpaint = False, name = 'highlight_masks'),
     HighlightAreaScorer(masks = 'highlight_masks', name = 'highlight_score'),
     DeleteFrames(delete = 'rgb_converter', name = 'deleter4'),
