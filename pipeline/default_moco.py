@@ -58,7 +58,7 @@ pipeline = Pipeline([
     Decimator(ranking = 'frame_scorer', sections = 'frame_sections', n_frames_per_section = 10, name = 'decimator'),
     
     # select images
-    Selector(frames = 'frame_reshape1', selection = 'decimator', name = 'selected_frames'),
+    Selector(frames = 'frame_reshaper1', selection = 'decimator', name = 'selected_frames'),
 
     # store images
     VideoStorer(frames = 'selected_frames', root_directory=store_path, name = 'frame_storer'),
