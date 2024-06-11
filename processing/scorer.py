@@ -149,7 +149,6 @@ class FeatureScorer(Process):
         for mask in self.masks:
             features, _ = self.orb.detectAndCompute(mask, None)
             iprs.append(len(features))
-        print(iprs)
         return iprs
 
 
